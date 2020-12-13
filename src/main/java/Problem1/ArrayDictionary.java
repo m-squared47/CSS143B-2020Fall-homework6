@@ -1,5 +1,9 @@
 package Problem1;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class ArrayDictionary implements Dictionary {
     private KVEntry[] entries;
 
@@ -46,6 +50,37 @@ public class ArrayDictionary implements Dictionary {
     @Override
     public void remove(String key) {
         // homework
+        int hashedKey = hashFunction(key);
+
+        //does not exist
+        if(entries[hashedKey] == null){
+            return;
+        }
+
+        KVEntry current = entries[hashedKey];
+        KVEntry previous = null;
+
+        //go through chain
+        while(current != null){
+            //key found
+            if(current.key == key){
+                //key is the head
+                if(previous == null){
+                    entries[hashedKey] = current.next;
+                    break;
+                }
+                //key is not the head
+                else{
+                    previous.next = current.next;
+                    entries[hashedKey] = previous;
+                }
+            }
+            //key not found
+            else{
+                previous = current;
+                current = current.next;
+            }
+        }
     }
 
     @Override
